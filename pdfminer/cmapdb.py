@@ -34,7 +34,7 @@ class CMapError(Exception):
     pass
 
 
-##  CMapBase
+# CMapBase
 ##
 class CMapBase:
 
@@ -61,7 +61,7 @@ class CMapBase:
         return
 
 
-##  CMap
+# CMap
 ##
 class CMap(CMapBase):
 
@@ -114,7 +114,7 @@ class CMap(CMapBase):
         return
 
 
-##  IdentityCMap
+# IdentityCMap
 ##
 class IdentityCMap(CMapBase):
 
@@ -126,7 +126,7 @@ class IdentityCMap(CMapBase):
             return ()
 
 
-##  UnicodeMap
+# UnicodeMap
 ##
 class UnicodeMap(CMapBase):
 
@@ -149,7 +149,7 @@ class UnicodeMap(CMapBase):
         return
 
 
-##  FileCMap
+# FileCMap
 ##
 class FileCMap(CMap):
 
@@ -169,7 +169,7 @@ class FileCMap(CMap):
         return
 
 
-##  FileUnicodeMap
+# FileUnicodeMap
 ##
 class FileUnicodeMap(UnicodeMap):
 
@@ -188,7 +188,7 @@ class FileUnicodeMap(UnicodeMap):
         return
 
 
-##  PyCMap
+# PyCMap
 ##
 class PyCMap(CMap):
 
@@ -200,7 +200,7 @@ class PyCMap(CMap):
         return
 
 
-##  PyUnicodeMap
+# PyUnicodeMap
 ##
 class PyUnicodeMap(UnicodeMap):
 
@@ -214,7 +214,7 @@ class PyUnicodeMap(UnicodeMap):
         return
 
 
-##  CMapDB
+# CMapDB
 ##
 class CMapDB:
 
@@ -262,11 +262,12 @@ class CMapDB:
         except KeyError:
             pass
         data = klass._load_data('to-unicode-%s' % name)
-        klass._umap_cache[name] = umaps = [PyUnicodeMap(name, data, v) for v in (False, True)]
+        klass._umap_cache[name] = umaps = [
+            PyUnicodeMap(name, data, v) for v in (False, True)]
         return umaps[vertical]
 
 
-##  CMapParser
+# CMapParser
 ##
 class CMapParser(PSStackParser):
 
@@ -355,7 +356,7 @@ class CMapParser(PSStackParser):
                 s1 = nunpack(svar)
                 e1 = nunpack(evar)
                 vlen = len(svar)
-                #assert s1 <= e1
+                # assert s1 <= e1
                 for i in range(e1-s1+1):
                     x = sprefix+struct.pack('>L', s1+i)[-vlen:]
                     self.cmap.add_code2cid(x, cid+i)
@@ -379,7 +380,7 @@ class CMapParser(PSStackParser):
             for (s, e, code) in choplist(3, objs):
                 if (not isinstance(s, bytes) or not isinstance(e, bytes) or
                    len(s) != len(e)):
-                        continue
+                    continue
                 s1 = nunpack(s)
                 e1 = nunpack(e)
                 #assert s1 <= e1
@@ -417,16 +418,16 @@ class CMapParser(PSStackParser):
         return
 
 
-##  CMapConverter
+# CMapConverter
 ##
 class CMapConverter:
 
     def __init__(self, enc2codec={}):
         self.enc2codec = enc2codec
-        self.code2cid = {} # {'cmapname': ...}
+        self.code2cid = {}  # {'cmapname': ...}
         self.is_vertical = {}
-        self.cid2unichr_h = {} # {cid: unichr}
-        self.cid2unichr_v = {} # {cid: unichr}
+        self.cid2unichr_h = {}  # {cid: unichr}
+        self.cid2unichr_v = {}  # {cid: unichr}
         return
 
     def get_encs(self):
@@ -457,8 +458,9 @@ class CMapConverter:
     def load(self, fp):
         encs = None
         for line in fp:
-            (line,_,_) = line.strip().partition('#')
-            if not line: continue
+            (line, _, _) = line.strip().partition('#')
+            if not line:
+                continue
             values = line.split('\t')
             if encs is None:
                 assert values[0] == 'CID'
@@ -495,16 +497,18 @@ class CMapConverter:
             def pick(unimap):
                 chars = sorted(
                     unimap.items(),
-                    key=(lambda x:(x[1],-ord(x[0]))), reverse=True)
-                (c,_) = chars[0]
+                    key=(lambda x: (x[1], -ord(x[0]))), reverse=True)
+                (c, _) = chars[0]
                 return c
 
             cid = int(values[0])
             unimap_h = {}
             unimap_v = {}
-            for (enc,value) in zip(encs, values):
-                if enc == 'CID': continue
-                if value == '*': continue
+            for (enc, value) in zip(encs, values):
+                if enc == 'CID':
+                    continue
+                if value == '*':
+                    continue
 
                 # hcodes, vcodes: encoded bytes for each writing mode.
                 hcodes = []
@@ -561,6 +565,8 @@ class CMapConverter:
         return
 
 # convert_cmap
+
+
 def convert_cmap(outdir, regname, enc2codec, paths):
     converter = CMapConverter(enc2codec)
 
@@ -597,6 +603,7 @@ def main(argv):
             CMapParser(cmap, fp).run()
             cmap.dump()
     return
+
 
 if __name__ == '__main__':
     sys.exit(main(sys.argv))
