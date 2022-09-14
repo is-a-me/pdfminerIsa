@@ -5,9 +5,11 @@
 #
 #  cf.
 #   ITU-T Recommendation T.4
-#     "Standardization of Group 3 facsimile terminals for document transmission"
+#     "Standardization of Group 3 facsimile terminals for document
+#       transmission"
 #   ITU-T Recommendation T.6
-#     "FACSIMILE CODING SCHEMES AND CODING CONTROL FUNCTIONS FOR GROUP 4 FACSIMILE APPARATUS"
+#     "FACSIMILE CODING SCHEMES AND CODING CONTROL FUNCTIONS FOR GROUP
+#       4 FACSIMILE APPARATUS"
 
 
 import sys
@@ -443,8 +445,9 @@ class CCITTG4Parser(BitParser):
         return
 
     def _do_vertical(self, dx):
-        #print('* vertical(%d): curpos=%r, color=%r' % (dx, self._curpos, self._color))
-        #print('  refline:', self._get_refline(self._curpos+1))
+        # print('* vertical(%d): curpos=%r, color=%r' %
+        # (dx, self._curpos, self._color))
+        # print('  refline:', self._get_refline(self._curpos+1))
         x1 = self._curpos+1
         while 1:
             if x1 == 0:
@@ -470,8 +473,8 @@ class CCITTG4Parser(BitParser):
         return
 
     def _do_pass(self):
-        #print('* pass: curpos=%r, color=%r' % (self._curpos, self._color))
-        #print('  refline:', self._get_refline(self._curpos+1))
+        # print('* pass: curpos=%r, color=%r' % (self._curpos, self._color))
+        # print('  refline:', self._get_refline(self._curpos+1))
         x1 = self._curpos+1
         while 1:
             if x1 == 0:
@@ -499,7 +502,8 @@ class CCITTG4Parser(BitParser):
         return
 
     def _do_horizontal(self, n1, n2):
-        #print('* horizontal(%d,%d): curpos=%r, color=%r' % (n1, n2, self._curpos, self._color))
+        # print('* horizontal(%d,%d): curpos=%r, color=%r' %
+        # (n1, n2, self._curpos, self._color))
         if self._curpos < 0:
             self._curpos = 0
         x = self._curpos
@@ -517,7 +521,7 @@ class CCITTG4Parser(BitParser):
         return
 
     def _do_uncompressed(self, bits):
-        #print('* uncompressed(%r): curpos=%r' % (bits, self._curpos))
+        # print('* uncompressed(%r): curpos=%r' % (bits, self._curpos))
         for c in bits:
             self._curline[self._curpos] = int(c)
             self._curpos += 1
