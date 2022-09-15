@@ -7,7 +7,7 @@ This code is in the public domain.
 """
 
 
-##  Arcfour
+#  Arcfour
 ##
 class Arcfour:
 
@@ -46,8 +46,8 @@ class Arcfour:
 
     encrypt = decrypt = process
 
-new = Arcfour
 
+new = Arcfour
 # test
 if __name__ == '__main__':
     import doctest
